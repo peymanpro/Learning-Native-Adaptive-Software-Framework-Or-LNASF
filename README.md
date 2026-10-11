@@ -1,10 +1,12 @@
-﻿# react-learnable-usestate-hook
+﻿# LNASF Adaptive React useState Hook
 
 A TypeScript/React state-management library with online transition learning, statistical confidence estimation, safety constraints, and controlled state adaptation.
 
 **Version:** 0.1.0 (Experimental)
 
 This is a research-oriented implementation that explores how React state management can be augmented with lightweight online learning from observed state transitions. The project demonstrates this concept through reproducible tests, benchmarks, and synthetic workload evaluation.
+
+It is an exploratory reference example of selected principles from the [Learning-Native Adaptive Software Framework (LNASF)](https://github.com/peymanpro/Learning-Native-Adaptive-Software-Framewor-Or-LNASF), particularly online transition learning, explicit prediction/decision separation, safety-constrained adaptation, and deterministic fallback. It is not a complete implementation of the full framework.
 
 It does **not** claim novelty in the mathematical techniques used, and it does **not** claim general-purpose superiority over ordinary `useState`.
 
@@ -940,7 +942,7 @@ The example illustrates the separation between application-driven state updates 
 
 This implementation is inspired by architectural concepts explored in the Learning-Native Adaptive Software Framework (LNASF):
 
-- GitHub: https://github.com/peymanpro/learning-native-adaptive-software-framework
+- GitHub: https://github.com/peymanpro/Learning-Native-Adaptive-Software-Framewor-Or-LNASF
 - Zenodo: https://doi.org/10.5281/zenodo.22141992
 
 This repository is an implementation experiment informed by that framework's architectural principles. It does not claim novelty for standard statistical or software engineering techniques used here.
