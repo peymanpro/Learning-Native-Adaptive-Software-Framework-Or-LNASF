@@ -1,0 +1,59 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+
+  &__header {
+    h1 {
+      margin: 0;
+      font-size: var(--font-size-xl);
+    }
+
+    p {
+      margin: var(--spacing-xs) 0 0;
+      color: var(--color-text-muted);
+    }
+  }
+
+  &__card {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    strong,
+    code {
+      text-align: right;
+    }
+  }
+
+  &__label {
+    display: block;
+    font-weight: 600;
+  }
+
+  &__description {
+    display: block;
+    margin-top: var(--spacing-xs);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

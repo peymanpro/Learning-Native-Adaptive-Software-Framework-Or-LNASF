@@ -1,0 +1,32 @@
+<section class="settings">
+  <header class="settings__header">
+    <div>
+      <h1>Settings</h1>
+      <p>Application configuration and environment information.</p>
+    </div>
+  </header>
+
+  <div class="settings__card">
+    <div class="settings__row">
+      <div>
+        <span class="settings__label">Environment</span>
+        <span class="settings__description"> Current application environment </span>
+      </div>
+
+      <strong>{{ environmentLabel }}</strong>
+    </div>
+
+    <div class="settings__row">
+      <div>
+        <span class="settings__label">API URL</span>
+        <span class="settings__description"> Base URL used by the application HTTP layer </span>
+      </div>
+
+      <code>{{ settings.apiUrl }}</code>
+    </div>
+  </div>
+
+  <div class="settings__actions">
+    <app-button label="Configuration loaded" [disabled]="true" />
+  </div>
+</section>

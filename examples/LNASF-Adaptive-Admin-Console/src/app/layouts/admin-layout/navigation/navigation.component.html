@@ -1,0 +1,123 @@
+<nav class="navigation" aria-label="Main navigation">
+  <div class="navigation__section">
+    <span class="navigation__section-title">Workspace</span>
+
+    <a
+      class="navigation__link"
+      routerLink="/dashboard"
+      routerLinkActive="navigation__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <svg
+        class="navigation__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+      </svg>
+
+      <span class="navigation__label">Dashboard</span>
+    </a>
+
+    <a class="navigation__link" routerLink="/users" routerLinkActive="navigation__link--active">
+      <svg
+        class="navigation__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+
+      <span class="navigation__label">Users</span>
+    </a>
+
+    <a class="navigation__link" routerLink="/products" routerLinkActive="navigation__link--active">
+      <svg
+        class="navigation__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <path d="m21 8-9-5-9 5 9 5 9-5Z" />
+        <path d="m3 8 9 5 9-5" />
+        <path d="M3 12l9 5 9-5" />
+        <path d="M3 16l9 5 9-5" />
+      </svg>
+
+      <span class="navigation__label">Products</span>
+    </a>
+  </div>
+
+  <div class="navigation__section">
+    <span class="navigation__section-title">Intelligence</span>
+
+    <a
+      class="navigation__link"
+      routerLink="/adaptive"
+      routerLinkActive="navigation__link--active"
+    >
+      <svg
+        class="navigation__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <path d="M9 3.5a4.5 4.5 0 0 0-4 6.55A4.5 4.5 0 0 0 7 18.5h2V3.5Z" />
+        <path d="M15 3.5a4.5 4.5 0 0 1 4 6.55 4.5 4.5 0 0 1-2 8.45h-2V3.5Z" />
+        <path d="M9 7h2m2 0h2M9 12h2m2 0h2M9 17h2m2 0h2" />
+        <path d="M12 3v18" />
+      </svg>
+
+      <span class="navigation__label">Adaptive Runtime</span>
+    </a>
+  </div>
+
+  <div class="navigation__section">
+    <span class="navigation__section-title">System</span>
+
+    <a class="navigation__link" routerLink="/settings" routerLinkActive="navigation__link--active">
+      <svg
+        class="navigation__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+        <path
+          d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20H10v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 5.73 15a1.7 1.7 0 0 0-1.56-1.03H4v-3.1h.17A1.7 1.7 0 0 0 5.73 9.8a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 10 5V4h3.1v1a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 18.93 11H20v3.1h-.17A1.7 1.7 0 0 0 19.4 15Z"
+        />
+      </svg>
+
+      <span class="navigation__label">Settings</span>
+    </a>
+  </div>
+
+  <div class="navigation__runtime" aria-live="polite">
+    <span
+      class="navigation__runtime-dot"
+      [class.navigation__runtime-dot--disabled]="!adaptiveRuntime.state().enabled"
+    ></span>
+    <div>
+      <strong>LNASF runtime</strong>
+      <span>{{ adaptiveRuntime.state().observations }} transitions observed</span>
+    </div>
+  </div>
+</nav>

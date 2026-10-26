@@ -1,0 +1,61 @@
+<div class="user-filters">
+  <div class="user-filters__search">
+    <svg class="user-filters__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.8"
+      />
+    </svg>
+
+    <input
+      id="user-search"
+      class="user-filters__input"
+      type="search"
+      [ngModel]="search"
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Search by name, email or username..."
+      autocomplete="off"
+    />
+  </div>
+
+  <select
+    id="user-gender"
+    class="user-filters__select"
+    [ngModel]="gender"
+    (ngModelChange)="onGenderChange($event)"
+  >
+    <option value="">All genders</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+
+  <select
+    id="user-role"
+    class="user-filters__select"
+    [ngModel]="role"
+    (ngModelChange)="onRoleChange($event)"
+  >
+    <option value="">All roles</option>
+    <option value="admin">Admin</option>
+    <option value="moderator">Moderator</option>
+    <option value="user">User</option>
+  </select>
+
+  @if (search || gender || role) {
+    <button class="user-filters__clear" type="button" (click)="clearFilters()">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M6 6l12 12M18 6 6 18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-width="1.8"
+        />
+      </svg>
+
+      <span>Clear</span>
+    </button>
+  }
+</div>

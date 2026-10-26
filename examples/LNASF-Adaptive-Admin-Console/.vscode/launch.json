@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Angular: serve",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "pnpm: start",
+      "url": "http://localhost:4200/"
+    },
+    {
+      "name": "Angular: test",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "pnpm: test",
+      "url": "http://localhost:9876/debug.html"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+.adaptive-runtime {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+.adaptive-runtime__header,
+.adaptive-runtime__card-header,
+.adaptive-runtime__event {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+.adaptive-runtime__header {
+  justify-content: space-between;
+}
+.adaptive-runtime h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+.adaptive-runtime h2 {
+  margin: var(--spacing-xs) 0 0;
+  font-size: 1.05rem;
+}
+.adaptive-runtime p,
+.adaptive-runtime__empty {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.65;
+}
+.adaptive-runtime__header p {
+  max-width: 46rem;
+  margin: var(--spacing-sm) 0 0;
+}
+.adaptive-runtime__eyebrow {
+  color: var(--color-primary);
+  font-size: 0.6875rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+}
+.adaptive-runtime__status,
+.adaptive-runtime__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-background);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+}
+.adaptive-runtime__status:not(.adaptive-runtime__status--disabled),
+.adaptive-runtime__tag--active {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+.adaptive-runtime__metrics,
+.adaptive-runtime__grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+.adaptive-runtime__metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.adaptive-runtime__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-lg);
+}
+.adaptive-runtime__metric,
+.adaptive-runtime__card,
+.adaptive-runtime__event {
+  min-width: 0;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.adaptive-runtime__metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+.adaptive-runtime__metric > span,
+.adaptive-runtime__metric small,
+.adaptive-runtime__details dt,
+.adaptive-runtime__policy span {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.adaptive-runtime__metric strong {
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  overflow-wrap: anywhere;
+}
+.adaptive-runtime__card-header {
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+.adaptive-runtime__details,
+.adaptive-runtime__policy {
+  margin: 0;
+}
+.adaptive-runtime__details > div,
+.adaptive-runtime__policy > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.adaptive-runtime__details dd {
+  margin: 0;
+  font-weight: 650;
+  text-align: right;
+}
+.adaptive-runtime__probability-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+.adaptive-runtime__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+.adaptive-runtime__actions button {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+}
+.adaptive-runtime__actions .adaptive-runtime__button-secondary {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+@media (max-width: 1100px) {
+  .adaptive-runtime__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .adaptive-runtime__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .adaptive-runtime__header,
+  .adaptive-runtime__card-header {
+    flex-direction: column;
+  }
+  .adaptive-runtime__metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .adaptive-runtime__metric,
+  .adaptive-runtime__card {
+    padding: var(--spacing-md);
+  }
+}

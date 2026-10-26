@@ -1,0 +1,37 @@
+<div class="login-page">
+  <section class="login-card">
+    <div class="login-card__header">
+      <h1>Sign in</h1>
+      <p>Sign in to access the admin panel.</p>
+    </div>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submit()">
+      <app-input
+        id="username"
+        label="Username"
+        placeholder="Enter your username"
+        formControlName="username"
+      />
+
+      <app-input
+        id="password"
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+      />
+
+      @if (errorMessage) {
+        <p class="login-form__error" role="alert">
+          {{ errorMessage }}
+        </p>
+      }
+
+      <app-button label="Sign in" type="submit" [disabled]="loginForm.invalid || isSubmitting" />
+    </form>
+
+    <p class="login-card__hint">
+      Demo credentials: <strong>emilys</strong> / <strong>emilyspass</strong>
+    </p>
+  </section>
+</div>

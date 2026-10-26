@@ -1,0 +1,163 @@
+<section class="users">
+  <header class="users__header">
+    <div>
+      <span class="users__eyebrow">Management</span>
+
+      <h1>Users</h1>
+
+      <p>Manage users, review account information, and monitor user activity.</p>
+    </div>
+
+    <div class="users__summary">
+      <span class="users__summary-icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          aria-hidden="true"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      </span>
+
+      <div>
+        <strong>{{ totalUsers }}</strong>
+        <span>Total users</span>
+      </div>
+    </div>
+  </header>
+
+  @if (isLoading) {
+    <app-loading />
+  } @else if (errorMessage) {
+    <app-empty-state title="Unable to load users" [message]="errorMessage" />
+  } @else if (!users.length) {
+    <app-empty-state title="No users found" message="There are currently no users available." />
+  } @else {
+    <app-user-filters (filtersChange)="onFilterChange($event)" />
+
+    @if (!filteredUsers.length) {
+      <app-empty-state
+        title="No matching users"
+        message="Try adjusting your search or filter criteria."
+      />
+    } @else {
+      <div class="users__table-card">
+        <div class="users__table-header">
+          <div>
+            <h2>User directory</h2>
+            <p>{{ totalUsers }} users found</p>
+          </div>
+
+          <span class="users__status">
+            <span class="users__status-dot"></span>
+            Active
+          </span>
+        </div>
+
+        <div class="users__table-wrapper">
+          <table class="users__table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Contact</th>
+                <th>Role</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (user of paginatedUsers; track user.id) {
+                <tr>
+                  <td>
+                    <div class="users__user">
+                      <img
+                        class="users__avatar"
+                        [src]="user.image"
+                        [alt]="user.firstName + ' ' + user.lastName"
+                      />
+
+                      <div class="users__user-info">
+                        <strong> {{ user.firstName }} {{ user.lastName }} </strong>
+
+                        <span>&#64;{{ user.username }}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="users__contact">
+                      <span>{{ user.email }}</span>
+                      <small>{{ user.phone }}</small>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span class="users__role">
+                      {{ user.role }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="users__value">
+                      {{ user.age }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="users__gender">
+                      {{ user.gender }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="users__location">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                      >
+                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                        <circle cx="12" cy="10" r="2.5" />
+                      </svg>
+
+                      <span>
+                        {{ user.address.city }},
+                        {{ user.address.country }}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="users__table-footer">
+          <span>
+            Showing
+            <strong>{{ paginatedUsers.length }}</strong>
+            of
+            <strong>{{ totalUsers }}</strong>
+            users
+          </span>
+
+          <app-user-pagination
+            [currentPage]="currentPage"
+            [pageSize]="pageSize"
+            [totalItems]="totalUsers"
+            (pageChange)="onPageChange($event)"
+          />
+        </footer>
+      </div>
+    }
+  }
+</section>

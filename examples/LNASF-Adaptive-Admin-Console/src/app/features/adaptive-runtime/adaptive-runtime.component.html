@@ -1,0 +1,149 @@
+<section class="adaptive-runtime">
+  <header class="adaptive-runtime__header">
+    <div>
+      <span class="adaptive-runtime__eyebrow">LNASF REFERENCE IMPLEMENTATION</span>
+      <h1>Adaptive Runtime</h1>
+      <p>
+        A learning-native navigation experiment that observes route transitions and preloads a
+        likely next page only when evidence and policy constraints allow it.
+      </p>
+    </div>
+
+    <span
+      class="adaptive-runtime__status"
+      [class.adaptive-runtime__status--disabled]="!state().enabled"
+    >
+      <span class="adaptive-runtime__status-dot"></span>
+      {{ state().enabled ? 'Adaptation enabled' : 'Baseline mode' }}
+    </span>
+  </header>
+
+  <section class="adaptive-runtime__metrics" aria-label="Runtime metrics">
+    <article class="adaptive-runtime__metric">
+      <span>Observed transitions</span>
+      <strong>{{ state().observations }}</strong>
+      <small>In-memory route changes</small>
+    </article>
+    <article class="adaptive-runtime__metric">
+      <span>Distinct transitions</span>
+      <strong>{{ state().uniqueTransitions }}</strong>
+      <small>Unique source-to-target pairs</small>
+    </article>
+    <article class="adaptive-runtime__metric">
+      <span>Preloads completed</span>
+      <strong>{{ state().preloadsCompleted }}</strong>
+      <small>{{ state().preloadFailures }} failures</small>
+    </article>
+    <article class="adaptive-runtime__metric">
+      <span>Prediction outcomes</span>
+      <strong>{{ state().predictionHits }} / {{ state().predictionMisses }}</strong>
+      <small>Matched / unmatched next route</small>
+    </article>
+  </section>
+
+  <section class="adaptive-runtime__grid">
+    <article class="adaptive-runtime__card">
+      <div class="adaptive-runtime__card-header">
+        <div>
+          <span class="adaptive-runtime__eyebrow">LEARN & PREDICT</span>
+          <h2>Current route model</h2>
+        </div>
+        <span class="adaptive-runtime__tag">First-order Markov</span>
+      </div>
+
+      <dl class="adaptive-runtime__details">
+        <div>
+          <dt>Current route</dt>
+          <dd>{{ formatRoute(state().currentRoute) }}</dd>
+        </div>
+        <div>
+          <dt>Predicted next route</dt>
+          <dd>{{ state().prediction ? formatRoute(state().prediction?.target ?? null) : 'Not enough evidence' }}</dd>
+        </div>
+        <div>
+          <dt>Observed transition probability</dt>
+          <dd>{{ formatProbability(state().prediction?.probability) }}</dd>
+        </div>
+        <div>
+          <dt>Observations from current route</dt>
+          <dd>{{ state().prediction?.observations ?? 0 }}</dd>
+        </div>
+      </dl>
+
+      @if (state().prediction) {
+        <div class="adaptive-runtime__probabilities">
+          <h3>Observed alternatives</h3>
+          @for (outcome of state().prediction?.alternatives ?? []; track outcome.route) {
+            <div class="adaptive-runtime__probability-row">
+              <span>{{ formatRoute(outcome.route) }}</span>
+              <strong>{{ formatProbability(outcome.probability) }}</strong>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="adaptive-runtime__empty">
+          Visit a few pages and repeat some navigation paths. The model learns from route
+          transitions observed in this tab; a fresh page load starts a new model.
+        </p>
+      }
+    </article>
+
+    <article class="adaptive-runtime__card">
+      <div class="adaptive-runtime__card-header">
+        <div>
+          <span class="adaptive-runtime__eyebrow">DECIDE & ADAPT</span>
+          <h2>Decision policy</h2>
+        </div>
+        <span
+          class="adaptive-runtime__tag"
+          [class.adaptive-runtime__tag--active]="state().decision.shouldPreload"
+        >
+          {{ state().decision.action === 'preload' ? 'Preload allowed' : 'Use baseline' }}
+        </span>
+      </div>
+
+      <p class="adaptive-runtime__decision-reason">{{ state().decision.reason }}</p>
+
+      <div class="adaptive-runtime__policy">
+        <div>
+          <span>Minimum observations</span>
+          <strong>{{ runtime.minimumObservations }}</strong>
+        </div>
+        <div>
+          <span>Minimum transition probability</span>
+          <strong>{{ formatProbability(runtime.minimumProbability) }}</strong>
+        </div>
+        <div>
+          <span>Speculative work budget</span>
+          <strong>1 route at a time</strong>
+        </div>
+        <div>
+          <span>Preloaded routes</span>
+          <strong>{{ state().preloadedRoutes.length }}</strong>
+        </div>
+      </div>
+
+      <div class="adaptive-runtime__actions">
+        <button type="button" (click)="toggleAdaptation()">
+          {{ state().enabled ? 'Disable adaptive preloading' : 'Enable adaptive preloading' }}
+        </button>
+        <button class="adaptive-runtime__button-secondary" type="button" (click)="resetLearning()">
+          Reset learned history
+        </button>
+      </div>
+
+      <p class="adaptive-runtime__privacy">
+        <strong>Privacy by design:</strong> only route names are observed, in memory. No user
+        identity, form values, product data, external AI API, or remote telemetry is used.
+      </p>
+    </article>
+  </section>
+
+  <section class="adaptive-runtime__event" aria-live="polite">
+    <span class="adaptive-runtime__event-dot"></span>
+    <div>
+      <strong>Latest runtime event</strong>
+      <p>{{ state().lastEvent }}</p>
+    </div>
+  </section>
+</section>

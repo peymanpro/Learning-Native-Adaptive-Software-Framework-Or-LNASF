@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "pnpm: start",
+      "type": "shell",
+      "command": "pnpm start",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*(Application bundle generation complete|bundle generation complete).*"
+        }
+      }
+    },
+    {
+      "label": "pnpm: test",
+      "type": "shell",
+      "command": "pnpm test",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*(Executed|TOTAL).*"
+        }
+      }
+    }
+  ]
+}

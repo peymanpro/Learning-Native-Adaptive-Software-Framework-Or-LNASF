@@ -1,0 +1,47 @@
+<section class="products">
+  <header class="products__header">
+    <div>
+      <h1>Products</h1>
+      <p>Browse products retrieved from the API.</p>
+    </div>
+  </header>
+
+  @if (isLoading) {
+    <app-loading label="Loading products..." />
+  } @else if (errorMessage) {
+    <app-empty-state title="Unable to load products" [message]="errorMessage" />
+  } @else if (!products.length) {
+    <app-empty-state
+      title="No products available"
+      message="There are currently no products to display."
+    />
+  } @else {
+    <div class="products__grid">
+      @for (product of products; track product.id) {
+        <article class="products__card">
+          <img class="products__image" [src]="product.thumbnail" [alt]="product.title" />
+
+          <div class="products__content">
+            <span class="products__category">
+              {{ product.category }}
+            </span>
+
+            <h2>{{ product.title }}</h2>
+
+            <p class="products__description">
+              {{ product.description }}
+            </p>
+
+            <div class="products__meta">
+              <strong>${{ product.price }}</strong>
+
+              <span>★ {{ product.rating }}</span>
+            </div>
+
+            <span class="products__stock"> {{ product.stock }} in stock </span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
