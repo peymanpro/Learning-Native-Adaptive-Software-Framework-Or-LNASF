@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Report dependency audit findings (non-blocking)
+        run: |
+          npm audit --json > "$RUNNER_TEMP/npm-audit.json" || true
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = process.env.RUNNER_TEMP + "/npm-audit.json";
+          let report;
+          try {
+            report = JSON.parse(fs.readFileSync(path, "utf8"));
+          } catch {
+            console.log("NPM_AUDIT_REPORT_UNAVAILABLE");
+            process.exit(0);
+          }
+          const severityRank = { critical: 4, high: 3, moderate: 2, low: 1, info: 0 };
+          console.log("NPM_AUDIT_SUMMARY=" + JSON.stringify(report.metadata?.vulnerabilities ?? {}));
+          const rows = Object.entries(report.vulnerabilities ?? {}).map(([name, item]) => ({
+            name,
+            severity: item.severity,
+            isDirect: item.isDirect,
+            range: item.range,
+            fixAvailable: item.fixAvailable,
+            advisories: (item.via ?? []).filter((entry) => typeof entry !== "string").map((entry) => ({
+              title: entry.title,
+              url: entry.url,
+              range: entry.range
+            }))
+          })).sort((a, b) =>
+            (severityRank[b.severity] ?? 0) - (severityRank[a.severity] ?? 0) ||
+            Number(b.isDirect) - Number(a.isDirect) ||
+            a.name.localeCompare(b.name)
+          );
+          for (const item of rows.slice(0, 20)) {
+            console.log("NPM_AUDIT_PACKAGE=" + JSON.stringify(item));
+          }
+          console.log("NPM_AUDIT_PACKAGES_REPORTED=" + Math.min(rows.length, 20) + "/" + rows.length);
+          NODE
+      - name: Enforce high and critical dependency audit
+        run: npm audit --audit-level=high
+      - name: Lint
+        run: npm run lint
+      - name: Syntax checks
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Check out the live ASP.NET Core SignalR backend
+        uses: actions/checkout@v7
+        with:
+          repository: peymanpro/signalr-aspnetcore
+          ref: 9025c0aaa7c24e4afc48bbcfc53caa936eb2bd6c
+          path: signalr-backend
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build the live SignalR backend
+        run: |
+          dotnet restore signalr-backend/src/src.csproj
+          dotnet build signalr-backend/src/src.csproj --configuration Release --no-restore
+      - name: Start the live SignalR Hub
+        run: |
+          ASPNETCORE_URLS=http://127.0.0.1:5000 CHAT_ALLOWED_ORIGINS=http://localhost:3000 LNASF_MODE=passive dotnet run --project signalr-backend/src/src.csproj --configuration Release --no-build > "$RUNNER_TEMP/signalr-backend.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/signalr-backend.pid"
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:5000/health > /dev/null; then
+              echo "SignalR backend is healthy."
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/signalr-backend.log"
+          exit 1
+      - name: Live Next.js client transport integration
+        env:
+          LNASF_LIVE_HUB_URL: http://127.0.0.1:5000/chat
+          NEXT_PUBLIC_SIGNALR_HUB_URL: http://127.0.0.1:5000/chat
+          NEXT_PUBLIC_LNASF_MODE: passive
+        run: npm run test:integration
