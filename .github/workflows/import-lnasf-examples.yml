@@ -31,7 +31,7 @@ jobs:
             https://raw.githubusercontent.com/git/git/master/contrib/subtree/git-subtree.sh \
             --output /usr/local/bin/git-subtree
           sudo chmod +x /usr/local/bin/git-subtree
-          git subtree -h >/dev/null
+          git subtree --version || true
 
       - name: Import each example while preserving its Git history
         shell: bash
