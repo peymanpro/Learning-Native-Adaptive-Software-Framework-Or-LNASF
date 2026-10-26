@@ -1,0 +1,14 @@
+
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+
+secrets.json

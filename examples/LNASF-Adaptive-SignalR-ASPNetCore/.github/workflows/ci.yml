@@ -1,0 +1,27 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore
+        run: dotnet restore signalr-aspnetcore-public-chatroom.sln
+      - name: Build
+        run: dotnet build signalr-aspnetcore-public-chatroom.sln --configuration Release --no-restore
+      - name: Test
+        run: dotnet test signalr-aspnetcore-public-chatroom.sln --configuration Release --no-build
