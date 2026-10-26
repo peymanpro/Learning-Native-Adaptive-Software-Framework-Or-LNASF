@@ -1,0 +1,107 @@
+name: Import LNASF examples with history
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/import-lnasf-examples.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-lnasf-examples
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the mother repository with full history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Install git-subtree
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes git-subtree
+
+      - name: Import each example while preserving its Git history
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          import_repo() {
+            local repo="$1"
+            local branch="$2"
+            local prefix="examples/$repo"
+
+            if [ -e "$prefix" ]; then
+              echo "::error::Destination already exists: $prefix. Refusing to overwrite."
+              exit 1
+            fi
+
+            echo "Importing $repo ($branch) into $prefix"
+            git subtree add --prefix="$prefix" "https://github.com/peymanpro/$repo.git" "$branch"
+          }
+
+          import_repo "LNASF-Adaptive-Customizable-Dashboard" "main"
+          import_repo "LNASF-Adaptive-SocketIO-Express" "main"
+          import_repo "LNASF-Adaptive-SocketIO-NestJS" "main"
+          import_repo "LNASF-Adaptive-SignalR-ASPNetCore" "main"
+          import_repo "LNASF-Adaptive-SignalR-NextJS" "main"
+          import_repo "LNASF-Adaptive-SocketIO-React" "main"
+          import_repo "LNASF-Adaptive-Next-dnd-kit-Playground" "main"
+          import_repo "LNASF-Adaptive-Angular-Task-Manager" "master"
+          import_repo "LNASF-Adaptive-Admin-Console" "master"
+          import_repo "LNASF-Adaptive-React-useState-Hook" "main"
+
+      - name: Point the README to the imported example folders
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("README.md")
+          text = path.read_text(encoding="utf-8")
+
+          text = text.replace(
+              "The repositories below are **separate, runnable examples of selected LNASF principles**. They remain independent repositories; this README links to them and explains their individual scope.",
+              "The projects below are **runnable examples of selected LNASF principles**, imported into this repository under `examples/` with Git subtree merges that preserve their source commit histories. Each link opens the corresponding project folder."
+          )
+
+          names = [
+              "LNASF-Adaptive-Customizable-Dashboard",
+              "LNASF-Adaptive-SocketIO-Express",
+              "LNASF-Adaptive-SocketIO-NestJS",
+              "LNASF-Adaptive-SignalR-ASPNetCore",
+              "LNASF-Adaptive-SignalR-NextJS",
+              "LNASF-Adaptive-SocketIO-React",
+              "LNASF-Adaptive-Next-dnd-kit-Playground",
+              "LNASF-Adaptive-Angular-Task-Manager",
+              "LNASF-Adaptive-Admin-Console",
+              "LNASF-Adaptive-React-useState-Hook",
+          ]
+          for name in names:
+              text = text.replace(
+                  f"https://github.com/peymanpro/{name}",
+                  f"https://github.com/peymanpro/Learning-Native-Adaptive-Software-Framework-Or-LNASF/tree/main/examples/{name}"
+              )
+
+          path.write_text(text, encoding="utf-8")
+          PY
+
+          if ! git diff --quiet -- README.md; then
+            git add README.md
+            git commit -m "docs: link LNASF examples to imported folders"
+          fi
+
+      - name: Push imported history and README updates
+        run: git push origin HEAD:main
