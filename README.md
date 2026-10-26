@@ -59,27 +59,28 @@ This implementation is an engineering demonstration—not a claim that the full 
 
 ## Implementation map and scope
 
-The repositories below are **runnable implementations or bounded technical examples**, not all complete implementations of the framework. They are ordered here by how much application/runtime behavior they demonstrate.
+The repositories below are **separate, runnable examples of selected LNASF principles**. They remain independent repositories; this README links to them and explains their individual scope. They are not all complete implementations of the LNASF framework, and their demonstrations do not by themselves establish performance or productivity gains.
 
-### Application-level adaptations
+### Application-level examples
 
-- [LNASF Adaptive Admin Console](https://github.com/peymanpro/LNASF-Adaptive-Admin-Console) — an Angular application that learns navigation transitions and uses an evidence-gated policy for speculative page preloading.
-- [LNASF Adaptive Angular Task Manager](https://github.com/peymanpro/LNASF-Adaptive-Angular-Task-Manager) — a task-management application with selected adaptive feedback and next-step recommendation behaviors.
-- [LNASF Adaptive Customizable Dashboard](https://github.com/peymanpro/LNASF-Adaptive-Customizable-Dashboard) — a dashboard reference implementation with evidence-gated, user-approved layout suggestions.
+- **[LNASF Adaptive Admin Console](https://github.com/peymanpro/LNASF-Adaptive-Admin-Console)** — an Angular application that learns navigation-transition frequencies and conditionally preloads an allowed lazy-loaded route. It separates prediction from the decision to preload, keeps normal navigation as the fallback, and exposes runtime counters for evaluation.
+- **[LNASF Adaptive Angular Task Manager](https://github.com/peymanpro/LNASF-Adaptive-Angular-Task-Manager)** — a task-management application that observes categories of task actions, learns common action transitions, and can offer bounded next-step recommendations in Passive, Advisory, or Adaptive mode. Recommendations do not automatically complete, edit, or delete tasks.
+- **[LNASF Adaptive Customizable Dashboard](https://github.com/peymanpro/LNASF-Adaptive-Customizable-Dashboard)** — a Next.js dashboard that learns transitions between explicitly recorded section-use events and may suggest moving a section to the top only after evidence thresholds pass and the user approves the change.
 
-### Real-time communication implementations
+### Real-time communication examples
 
-- [ASP.NET Core + SignalR](https://github.com/peymanpro/LNASF-Adaptive-SignalR-ASPNetCore)
-- [Next.js + SignalR client](https://github.com/peymanpro/LNASF-Adaptive-SignalR-NextJS)
-- [Express + Socket.IO](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-Express)
-- [NestJS + Socket.IO](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-NestJS)
-- [React + Socket.IO client](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-React)
+These examples apply a narrow learning/adaptation policy to chat typing events or connection retry behavior. They are deliberately bounded demonstrations, not production-ready messaging infrastructure.
 
-These are bounded communication/integration examples. Their individual READMEs document which LNASF principles are implemented and which production concerns remain out of scope; they should not be described as complete framework implementations.
+- **[LNASF Adaptive SignalR — ASP.NET Core](https://github.com/peymanpro/LNASF-Adaptive-SignalR-ASPNetCore)** — an ASP.NET Core 8 and SignalR chat backend with a native C# online model that learns typing-event intervals. In Adaptive mode, it may suppress duplicate `typing-start` notifications only when evidence and confidence thresholds pass; messages, `typing-stop`, and validation remain outside the adaptive policy.
+- **[LNASF Adaptive SignalR — Next.js Client](https://github.com/peymanpro/LNASF-Adaptive-SignalR-NextJS)** — a Next.js SignalR chat client that learns from retry success/failure outcomes and can select a bounded reconnect delay when the evidence and utility policy justify it. It includes reconnect lifecycle handling, event validation, and bounded retry limits.
+- **[LNASF Adaptive Socket.IO — Express](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-Express)** — an Express and Socket.IO chat backend with a JavaScript typing-burst model. Its adaptive behavior is limited to duplicate typing-start notifications; the default Passive mode preserves ordinary message delivery.
+- **[LNASF Adaptive Socket.IO — NestJS](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-NestJS)** — a NestJS WebSocket gateway and Socket.IO chat backend that demonstrates the same bounded typing-burst adaptation through a native TypeScript model, with explicit operating modes, evidence thresholds, fallback, and runtime metrics.
+- **[LNASF Adaptive Socket.IO — React Client](https://github.com/peymanpro/LNASF-Adaptive-SocketIO-React)** — a React and Socket.IO chat client that learns from connection retry outcomes and applies a bounded retry policy. It distinguishes retryable network failures from disconnects that require user action and exposes policy diagnostics in the UI.
 
-### Focused interaction demonstrations
+### Focused frontend state and interaction examples
 
-[React useState](https://github.com/peymanpro/LNASF-Adaptive-React-useState-Hook) and the [Next.js dnd-kit playground](https://github.com/peymanpro/LNASF-Adaptive-Next-dnd-kit-Playground) isolate selected state and interaction ideas. They are useful research examples, but they are not substitutes for the application-level implementations above.
+- **[LNASF Adaptive React useState Hook](https://github.com/peymanpro/LNASF-Adaptive-React-useState-Hook)** — an experimental TypeScript/React state-management library that learns observed state transitions, estimates statistical confidence, applies explicit safety and decision gates, and retains deterministic application-driven updates as the fallback. It is a research-oriented hook/library example, not a replacement that is universally superior to React's built-in `useState`.
+- **[LNASF Adaptive Next.js dnd-kit Playground](https://github.com/peymanpro/LNASF-Adaptive-Next-dnd-kit-Playground)** — an interactive Next.js drag-and-drop and Kanban playground that learns transitions between successful UI event categories and presents optional next-step suggestions when minimum evidence thresholds are met. Suggestions are advisory; the model does not reorder items or move tasks automatically.
 
 ## Real-Time Communication Examples
 
