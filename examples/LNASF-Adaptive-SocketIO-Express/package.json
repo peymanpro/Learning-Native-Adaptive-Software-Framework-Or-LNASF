@@ -1,0 +1,31 @@
+{
+  "name": "socketio-express-public-chatroom",
+  "version": "1.1.0",
+  "description": "A validated real-time chat backend using Express and Socket.IO",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check chat-validation.js && node --check lnasf/typing-adaptation.js && node --check test/server.test.js && node --check test/lnasf.test.js && node --check test/socketio-polling-client.cjs && node --check test/socketio-integration.test.cjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "socket.io",
+    "express",
+    "chatroom",
+    "realtime"
+  ],
+  "author": "Peyman",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "overrides": {
+    "qs": "^6.16.0"
+  }
+}

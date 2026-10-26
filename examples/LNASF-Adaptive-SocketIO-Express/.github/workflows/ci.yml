@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Report dependency audit findings (non-blocking)
+        run: |
+          npm audit --json > "$RUNNER_TEMP/npm-audit.json" || true
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = process.env.RUNNER_TEMP + "/npm-audit.json";
+          let report;
+          try {
+            report = JSON.parse(fs.readFileSync(path, "utf8"));
+          } catch {
+            console.log("NPM_AUDIT_REPORT_UNAVAILABLE");
+            process.exit(0);
+          }
+          const severityRank = { critical: 4, high: 3, moderate: 2, low: 1, info: 0 };
+          console.log("NPM_AUDIT_SUMMARY=" + JSON.stringify(report.metadata?.vulnerabilities ?? {}));
+          const rows = Object.entries(report.vulnerabilities ?? {}).map(([name, item]) => ({
+            name,
+            severity: item.severity,
+            isDirect: item.isDirect,
+            range: item.range,
+            fixAvailable: item.fixAvailable,
+            advisories: (item.via ?? []).filter((entry) => typeof entry !== "string").map((entry) => ({
+              title: entry.title,
+              url: entry.url,
+              range: entry.range
+            }))
+          })).sort((a, b) =>
+            (severityRank[b.severity] ?? 0) - (severityRank[a.severity] ?? 0) ||
+            Number(b.isDirect) - Number(a.isDirect) ||
+            a.name.localeCompare(b.name)
+          );
+          for (const item of rows.slice(0, 20)) {
+            console.log("NPM_AUDIT_PACKAGE=" + JSON.stringify(item));
+          }
+          console.log("NPM_AUDIT_PACKAGES_REPORTED=" + Math.min(rows.length, 20) + "/" + rows.length);
+          NODE
+      - name: Enforce high and critical dependency audit
+        run: npm audit --audit-level=high
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Run tests
+        run: npm test
