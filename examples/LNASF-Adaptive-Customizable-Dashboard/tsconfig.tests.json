@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "rootDir": ".",
+    "outDir": ".test-build",
+    "noEmitOnError": true
+  },
+  "include": [
+    "src/lib/lnasf/dashboard-learning.ts",
+    "tests/dashboard-learning.test.ts"
+  ]
+}

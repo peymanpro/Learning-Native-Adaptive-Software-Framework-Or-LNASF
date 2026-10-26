@@ -1,0 +1,106 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* رنگ‌های primary - پیش‌فرض آبی */
+    --color-primary-50: 239 246 255;
+    --color-primary-100: 219 234 254;
+    --color-primary-200: 191 219 254;
+    --color-primary-300: 147 197 253;
+    --color-primary-400: 96 165 250;
+    --color-primary-500: 59 130 246;
+    --color-primary-600: 37 99 235;
+    --color-primary-700: 29 78 216;
+    --color-primary-800: 30 64 175;
+    --color-primary-900: 30 58 138;
+    --color-primary-950: 23 37 84;
+
+    /* متغیرهای دیگر */
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --border-radius-base: 0.5rem;
+    
+    /* رنگ‌های پس‌زمینه و متن پایه */
+    --bg-primary: 255 255 255;
+    --text-primary: 17 24 39;
+  }
+
+  .dark {
+    /* رنگ‌های primary برای حالت تاریک - نسخه‌های روشن‌تر */
+    --color-primary-50: 15 23 42;
+    --color-primary-100: 30 41 59;
+    --color-primary-200: 51 65 85;
+    --color-primary-300: 71 85 105;
+    --color-primary-400: 100 116 139;
+    --color-primary-500: 148 163 184;
+    --color-primary-600: 203 213 225;
+    --color-primary-700: 226 232 240;
+    --color-primary-800: 241 245 249;
+    --color-primary-900: 248 250 252;
+    --color-primary-950: 255 255 255;
+
+    /* رنگ‌های پس‌زمینه و متن برای حالت تاریک */
+    --bg-primary: 17 24 39;
+    --text-primary: 243 244 246;
+  }
+
+  body {
+    @apply bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))] transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-offset-2 
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-600 
+           focus:ring-primary-500 dark:focus:ring-offset-gray-900;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300 
+           dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600
+           focus:ring-gray-500 dark:focus:ring-offset-gray-900;
+  }
+  
+  .btn-outline {
+    @apply border border-gray-300 bg-transparent hover:bg-gray-50 
+           dark:border-gray-600 dark:hover:bg-gray-800
+           focus:ring-gray-500 dark:focus:ring-offset-gray-900;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 
+           border border-gray-200 dark:border-gray-700
+           transition-all duration-300 hover:shadow-lg;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md
+           bg-white dark:bg-gray-800 dark:border-gray-600
+           focus:outline-none focus:ring-2 focus:ring-primary-500 
+           dark:text-white transition-colors duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+}
