@@ -1,0 +1,38 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>{{ getTitle() }}</h2>
+    <form (ngSubmit)="onSubmit()">
+      <input 
+        type="text" 
+        [(ngModel)]="editedTask.title" 
+        name="title"
+        placeholder="Task title"
+        required
+        class="input-title">
+      <textarea 
+        [(ngModel)]="editedTask.description" 
+        name="description"
+        placeholder="Description (optional)"
+        rows="3"
+        class="input-description"></textarea>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority</label>
+          <select [(ngModel)]="editedTask.priority" name="priority" class="select-priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" [(ngModel)]="editedTask.dueDate" name="dueDate" class="input-date">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <app-button text="Cancel" type="secondary" (clicked)="onCancel()"></app-button>
+        <app-button [text]="getButtonText()" type="primary" (clicked)="onSubmit()"></app-button>
+      </div>
+    </form>
+  </div>
+</div>

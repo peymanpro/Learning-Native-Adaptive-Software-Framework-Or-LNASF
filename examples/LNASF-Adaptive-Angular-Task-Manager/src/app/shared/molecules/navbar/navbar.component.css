@@ -1,0 +1,100 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 14px 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-brand {
+  flex: 0 0 auto; /* برند در سمت چپ ثابت می‌ماند */
+}
+
+.nav-brand a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-brand a:hover {
+  color: #3b82f6;
+}
+
+.brand-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-icon-wrapper svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* لینک‌ها در وسط قرار می‌گیرند */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1; /* این بخش تمام فضای باقی‌مانده را می‌گیرد */
+  justify-content: center; /* محتویات داخل آن وسط‌چین می‌شوند */
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.nav-links a.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.nav-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-icon-wrapper svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  stroke: currentColor;
+}
+
+.nav-links a.active .nav-icon-wrapper svg {
+  stroke: white;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 4px;
+  line-height: 1.4;
+}

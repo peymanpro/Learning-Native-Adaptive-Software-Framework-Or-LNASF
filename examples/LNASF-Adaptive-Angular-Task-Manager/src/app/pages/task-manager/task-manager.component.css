@@ -1,0 +1,39 @@
+.task-manager-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+  color: #3b82f6;
+}
+
+.page-title {
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon-wrapper svg {
+  width: 28px;
+  height: 28px;
+  color: #3b82f6;      
+  display: block;
+}

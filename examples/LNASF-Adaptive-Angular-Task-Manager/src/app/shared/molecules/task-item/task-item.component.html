@@ -1,0 +1,26 @@
+<div class="task-item" [class.completed]="task.completed">
+  <div class="task-content">
+    <input 
+      type="checkbox" 
+      [checked]="task.completed"
+      (change)="onToggle()" 
+      class="task-checkbox">
+
+    <div class="task-info">
+      <h3 [class.line-through]="task.completed">{{ task.title }}</h3>
+      <p *ngIf="task.description" class="description">{{ task.description }}</p>
+      
+      <div class="task-meta">
+        <span class="priority {{ getPriorityClass() }}">{{ task.priority }}</span>
+        <span *ngIf="task.dueDate" class="due-date">
+          {{ task.dueDate | date:'shortDate' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-actions">
+    <app-button text="Edit" type="secondary" (clicked)="onEdit()"></app-button>
+    <app-button text="Delete" type="danger" (clicked)="onDelete()"></app-button>
+  </div>
+</div>

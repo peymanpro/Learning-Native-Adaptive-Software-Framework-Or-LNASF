@@ -1,0 +1,55 @@
+<section class="lnasf-panel" aria-labelledby="lnasf-title">
+  <div class="panel-heading">
+    <div>
+      <p class="eyebrow">Learning-Native Adaptive Software Framework</p>
+      <h3 id="lnasf-title">Adaptive workflow</h3>
+      <p class="panel-intro">Learns patterns from task and filter actions in this browser session. The mode controls how the learned prediction may affect the interface.</p>
+    </div>
+    <label class="mode-control">
+      <span>Mode</span>
+      <select [value]="state().mode" (change)="setMode($event)" aria-label="LNASF adaptation mode">
+        <option value="passive">Passive</option>
+        <option value="advisory">Advisory</option>
+        <option value="adaptive">Adaptive</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="prediction-area" *ngIf="state().decision.shouldRecommend && state().prediction as prediction">
+    <div class="prediction-copy">
+      <p class="status-line">{{ state().mode === 'advisory' ? 'Recommendation (advisory only)' : 'Suggested next step' }}</p>
+      <p class="prediction-title">{{ describeAction(prediction.action) }}</p>
+      <p class="reason">{{ state().decision.reason }}</p>
+    </div>
+    <div class="confidence">
+      <strong>{{ prediction.probability * 100 | number: '1.0-0' }}%</strong>
+      <span>observed frequency</span>
+      <small>{{ prediction.observations }} transitions from this action</small>
+    </div>
+    <div class="suggestion-actions" *ngIf="state().decision.canApply && canApplySuggestion(prediction.action)">
+      <button type="button" (click)="requestSuggestion(prediction.action)">
+        <ng-container [ngSwitch]="prediction.action">
+          <span *ngSwitchCase="'task:add'">Open add-task form</span>
+          <span *ngSwitchCase="'filter:all'">Show all tasks</span>
+          <span *ngSwitchCase="'filter:active'">Show active tasks</span>
+          <span *ngSwitchCase="'filter:completed'">Show completed tasks</span>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <p class="baseline-message" *ngIf="!state().decision.shouldRecommend">{{ state().decision.reason }}</p>
+
+  <div class="metrics" aria-label="Adaptive workflow evaluation">
+    <div><strong>{{ state().observations }}</strong><span>Observed transitions</span></div>
+    <div><strong>{{ state().uniqueTransitions }}</strong><span>Distinct patterns</span></div>
+    <div><strong>{{ state().predictionHits }}</strong><span>Recommendation matches</span></div>
+    <div><strong>{{ state().predictionMisses }}</strong><span>Recommendation misses</span></div>
+  </div>
+
+  <div class="panel-footer">
+    <span>{{ state().lastEvent }}</span>
+    <button type="button" class="reset-button" (click)="resetLearning()">Reset learning</button>
+  </div>
+  <p class="privacy-note">Session-only learning. Task titles, descriptions, IDs, and account data are not recorded. No task is completed, edited, or deleted automatically.</p>
+</section>

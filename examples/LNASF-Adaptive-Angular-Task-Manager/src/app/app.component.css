@@ -1,0 +1,21 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+}
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: auto;
+  background: rgba(255,255,255,0.5);
+}

@@ -1,0 +1,39 @@
+<div class="task-list-container">
+  <div class="list-header">
+    <app-button text="+ Add New Task" type="primary" (clicked)="openAddModal()" class="add-btn"></app-button>
+
+    <div class="filter-wrapper">
+      <select [ngModel]="filter" (ngModelChange)="setFilter($event)" class="filter-select" aria-label="Filter tasks">
+        <option value="all">All</option>
+        <option value="active">Active</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+  </div>
+
+  <app-adaptive-workflow-panel
+    (actionRequested)="applySuggestedAction($event)">
+  </app-adaptive-workflow-panel>
+
+  <div class="tasks">
+    <app-task-item
+      *ngFor="let task of filteredTasks"
+      [task]="task"
+      (toggle)="onToggle($event)"
+      (delete)="onDelete($event)"
+      (edit)="onEdit($event)">
+    </app-task-item>
+
+    <div *ngIf="filteredTasks.length === 0" class="empty-state">
+      <p>No tasks found</p>
+    </div>
+  </div>
+
+  <app-task-edit
+    *ngIf="editingTask"
+    [task]="editingTask"
+    [mode]="editMode"
+    (save)="saveEdit($event)"
+    (cancel)="closeEdit()">
+  </app-task-edit>
+</div>

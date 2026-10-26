@@ -1,0 +1,33 @@
+name: quality
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies from the committed lockfile
+        run: npm ci
+
+      - name: Build production application
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless
